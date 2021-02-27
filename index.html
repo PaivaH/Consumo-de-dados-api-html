@@ -15,19 +15,19 @@
         <h2 class="p-1">Desafio 2 - Consumo de APIS</h1>
     </div>
     <div class="form-group p-5 bg-info">
-        <label class="text-light">Pegar todos os partidos</label>
+        <label class="text-light">Pegar todos os partidos conforme a pesquisa</label>
         <button type="button" class="btn-dark m-1" onclick="pegarPartidos()">Enviar</button>
-        <p id="ListaPartidos" class="text-light"></p>
+        <p id="ListaPartidos" class="text-light p-1"></p>
         <hr>
-        <label for="partido" class="text-light">Digite o numero do partido</label>
+        <label for="partido" class="text-light">Digite o ID do partido conforme a pesquisa</label>
         <input type="text" class="form-control" id="numeroPartido">
         <button type="button" class="btn-dark m-1" onclick="pesquisarPartido()">Enviar</button>
-        <p id="ListarDeputados"></p>
+        <p id="ListarDeputados" class="text-light p-1"></p>
         <hr>
-        <label for="deputado" class="text-light">Digite o numero do partidos para ver seus membros</label>
+        <label for="deputado" class="text-light">Digite o ID do partidos para ver seus membros conforme a pesquisa</label>
         <input type="text" class="form-control" id="numeroP">
         <button type="button" class="btn-dark m-1" onclick="pesquisarMembros()">Enviar</button>
-        <p id="membros"></p>
+        <p id="membros" class="text-light p-1"></p>
     </div>
     <script>
         function pegarPartidos(){
@@ -83,7 +83,7 @@
                     let info = partido.dados;
                     info.forEach(element => {
                         var para = document.createElement("p");
-                        var node = document.createTextNode(`ID: ${element.id} | ID Legislatura: ${element.idLegislatura} | Sigla: ${element.nome} | UF ${element.siglaUf}`);
+                        var node = document.createTextNode(`ID: ${element.id} | ID Legislatura: ${element.idLegislatura} | Nome: ${element.nome} | UF ${element.siglaUf}`);
                         para.appendChild(node);
                         var elem = document.getElementById("membros");
                         elem.appendChild(para);

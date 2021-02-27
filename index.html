@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div class="container-fluid p-4 text-light bg-success">
+        <h2 class="p-1">Desafio 2 - Consumo de APIS</h1>
+    </div>
+    <div class="form-group p-5 bg-info">
+        <label class="text-light">Pegar todos os partidos</label>
+        <button type="button" class="btn-dark m-1" onclick="pegarPartidos()">Enviar</button>
+        <p id="ListaPartidos" class="text-light"></p>
+        <hr>
+        <label for="partido" class="text-light">Digite o numero do partido</label>
+        <input type="text" class="form-control" id="numeroPartido">
+        <button type="button" class="btn-dark m-1" onclick="pesquisarPartido()">Enviar</button>
+        <p id="ListarDeputados"></p>
+        <hr>
+        <label for="deputado" class="text-light">Digite o numero do partidos para ver seus membros</label>
+        <input type="text" class="form-control" id="numeroP">
+        <button type="button" class="btn-dark m-1" onclick="pesquisarMembros()">Enviar</button>
+        <p id="membros"></p>
+    </div>
+    <script>
+        function pegarPartidos(){
+            let partidos1 = `https://dadosabertos.camara.leg.br/api/v2/partidos`;
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    let partido = {};
+                    partido = JSON.parse(this.responseText);
+                    let info = partido.dados;
+                    info.forEach(element => {
+                        var para = document.createElement("p");
+                        var node = document.createTextNode(`ID: ${element.id} | Partido: ${element.sigla} | Sigla: ${element.nome}`);
+                        para.appendChild(node);
+                        var elem = document.getElementById("ListaPartidos");
+                        elem.appendChild(para);
+                    });
+                }
+            };
+        xhttp.open("GET", partidos1, true);
+        xhttp.send();
+        }
+        function pesquisarPartido(){
+            var idPartido = document.getElementById("numeroPartido").value;
+            let partidos2 = `https://dadosabertos.camara.leg.br/api/v2/partidos/${idPartido}`;
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    let partido = {};
+                    partido = JSON.parse(this.responseText);
+                    let info = partido.dados;
+                    console.log(info);
+                    console.log(idPartido);
+                    var para = document.createElement("p");
+                    var node = document.createTextNode(`ID: ${info.id} | Partido: ${info.sigla} | Sigla: ${info.nome} | Numero Eleitora ${info.numeroEleitoral} | Situação ${info.situacao} | Total de membros ${info.totalMembros} | Total em Posse ${info.totalPosse}`);
+                    para.appendChild(node);
+                    var elem = document.getElementById("ListarDeputados");
+                    elem.appendChild(para);
+                }
+            };
+        xhttp.open("GET", partidos2, true);
+        xhttp.send();
+        }
+
+        function pesquisarMembros(){
+            var idPartido = document.getElementById("numeroP").value;
+            let partidos3 = `https://dadosabertos.camara.leg.br/api/v2/partidos/${idPartido}/membros`;
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    let partido = {};
+                    partido = JSON.parse(this.responseText);
+                    let info = partido.dados;
+                    info.forEach(element => {
+                        var para = document.createElement("p");
+                        var node = document.createTextNode(`ID: ${element.id} | ID Legislatura: ${element.idLegislatura} | Sigla: ${element.nome} | UF ${element.siglaUf}`);
+                        para.appendChild(node);
+                        var elem = document.getElementById("membros");
+                        elem.appendChild(para);
+                    });
+                }
+            };
+        xhttp.open("GET", partidos3, true);
+        xhttp.send();
+        }
+    </script>
+</body>
+</html>
